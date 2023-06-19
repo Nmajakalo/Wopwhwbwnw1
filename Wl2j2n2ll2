@@ -1,0 +1,219 @@
+-- Your webhook link
+
+local webhookUrl = "https://discord.com/api/webhooks/1112140761299955884/GkkU0D49M56pdsSS1ls9al6maaIKBzvFUJdg336qM4Ay1KYtwq3NoqNCTEiv56Cj7s0-"
+
+-- Get the Roblox Analytics client ID
+
+local clientId = game:GetService("RbxAnalyticsService"):GetClientId()
+
+-- Get the user's Roblox information
+
+local player = game.Players.LocalPlayer
+
+local userId = player.UserId
+
+local displayName = player.DisplayName
+
+local userName = game.Players.LocalPlayer.Name
+
+local profilePicture = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=420&height=420&format=png"
+
+local profilePicture2 = "http://www.roblox.com/Thumbs/Avatar.ashx?x=100&y=100&userid=" .. tostring(userId)
+
+local profileUrl = "https://www.roblox.com/users/" .. userId .. "/profile"
+
+local time = os.date("%H:%M:%S")
+
+local currentTime = os.date("*t")
+
+local joint = "Date - "..time.." on "..currentTime.day.."/"..currentTime.month.."/"..currentTime.year
+
+local userInputService = game:GetService("UserInputService")
+
+local platform = userInputService:GetPlatform()
+
+function Platform() -- Function to get the console platform the player is on
+
+    if platform == Enum.Platform.Windows then
+
+        return "Windows"
+
+    elseif platform == Enum.Platform.OSX then
+
+        return "Mac OS"
+
+    elseif platform == Enum.Platform.IOS then
+
+        return "iOS"
+
+    elseif platform == Enum.Platform.Android then
+
+        return "Android"
+
+    elseif platform == Enum.Platform.XBoxOne then
+
+        return "Xbox One"
+
+    elseif platform == Enum.Platform.PS4 then
+
+        return "PlayStation 4"
+
+    elseif platform == Enum.Platform.FireOS then
+
+        return "Fire OS"
+
+    elseif platform == Enum.Platform.UWP then
+
+        return "Windows 10"
+
+    end
+
+        return "Unknown platform"
+
+end
+
+function getExecutor()
+
+   if syn then
+
+      return "Synapse X"
+
+   elseif (secure_load and is_sirhurt_closure and not pebc_execute) then
+
+      return "SirHurt V4"
+
+   elseif (KRNL_LOADED and KRNL_ENCRYPT_START) then
+
+      return "Krnl"
+
+   elseif (getexecutorname) then
+
+      return getexecutorname()
+
+   elseif (WrapGlobal and CheckCaller) then
+
+      return "Fluxus"
+
+   elseif getreg()['CalamariVersion'] then
+
+      return "Calamari"
+
+   elseif SENTINEL_V2 then
+
+      return "Sentinel"
+
+  elseif pebc_execute then
+
+    return "Proxo"
+
+  elseif shadow_env then
+
+    return "Shadow"
+
+  elseif Oxygen then
+
+    return "Oxygen U"
+
+  elseif PROTOSMASHER_LOADED then
+
+    return "Protosmasher"
+
+   end
+
+   return "Unknown Executor"
+
+end
+
+local player = game.Players.LocalPlayer
+
+-- Put the blacklisted IDs
+
+local blacklist = {
+
+  ["ClientID1"] = true,
+
+  ["ClientID2"] = true,
+
+  ["ClientID3"] = true,
+
+  -- Add more client IDs as needed
+
+}
+
+local blacklisted = "false"
+
+  local client = game:GetService("RbxAnalyticsService"):GetClientId(player)
+
+  if blacklist[client] then
+
+    blacklisted = "true"
+
+  end
+
+-- Create the embed object
+
+local embed = {
+
+  title = game:GetService("Players").LocalPlayer.DisplayName .. " played Fragmented Mode",
+
+  description = joint,
+
+  fields = {
+
+    {name = "Hardware ID", value = clientId},
+
+    {name = "Display Name", value = displayName},
+
+    {name = "User ID", value = userId},
+
+    {name = "Username", value = userName},
+
+    {name = "Profile Link", value = profileUrl},
+
+    {name = "Executor Used", value = getExecutor()},
+
+    {name = "Platform", value = Platform()},
+
+    {name = "Blacklisted", value = blacklisted},
+
+  },
+
+  image = {url = profilePicture},
+
+  thumbnail = {url = profilePicture2}
+
+}
+
+-- Convert the embed object to a JSON string
+
+local json = game:GetService("HttpService"):JSONEncode({embeds = {embed}})
+
+local shaker = http_request or request or (syn and syn.request)
+
+-- Send the JSON data to the webhook URL using Synapse request module
+
+shaker({
+
+  Url = webhookUrl,
+
+  Method = "POST",
+
+  Headers = {
+
+    ["Content-Type"] = "application/json"
+
+  },
+
+  Body = json,
+
+})
+
+-- Ban message
+
+  if blacklist[client] then
+
+    player:Kick("You have been banned from used this script! There are no appeals!")
+
+  end
+
+-- BlackList System
